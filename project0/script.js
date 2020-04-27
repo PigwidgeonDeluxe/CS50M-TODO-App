@@ -10,8 +10,22 @@ const itemCountSpan = document.getElementById('item-count')
 const uncheckedCountSpan = document.getElementById('unchecked-count')
 
 function newTodo() {
-  const userInput = prompt('New to-do list item:', 'i.e. boil some eggs');
 
+  const userInput = prompt('New to-do list item:');
+
+  // check if user input is empty
+  if (userInput.trim() == ''){
+    alert('User input cannot be empty!');
+    newTodo();
+    return;
+  }
+  // check if user input is too long
+  if (userInput.length > 52){
+    alert('User input must be 52 characters or less!');
+    newTodo();
+    return;
+  }
+  
   // create new list element
   const todoItem = document.createElement('li');
   todoItem.classList.add(classNames.TODO_ITEM);
@@ -19,25 +33,40 @@ function newTodo() {
   // create a checkbox for the list element
   const todoCheckbox = document.createElement('INPUT');
   todoCheckbox.type = 'checkbox';
-  todoCheckbox.id = 'listCheckbox';
-  todoCheckbox.classList.add(classNames.TODO_CHECKBOX);
+  todoCheckbox.class = classNames.TODO_CHECKBOX;
 
   // create span for list element
   const todoText = document.createElement('span');
-  todoText.classList.add(classNames.TODO_TEXT);
+  todoText.classL = classNames.TODO_TEXT;
   todoText.textContent = userInput;
+
+  // create delete button
+  const todoDelete = document.createElement('button');
+  todoDelete.innerHTML = 'Delete';
+  todoDelete.class = classNames.TODO_DELETE;
   
-  // add checkbox and span to list item and append list item to list 
+  // add checkbox, span, and button to list item, and append list item to list 
   todoItem.appendChild(todoCheckbox);
   todoItem.appendChild(todoText);
+  todoItem.appendChild(todoDelete);
   list.appendChild(todoItem);
 
   // update item count and unchecked count
   var liList = list.getElementsByTagName('li');
   itemCountSpan.textContent = liList.length;
   uncheckedCountSpan.textContent = document.querySelectorAll('input[type="checkbox"]:not(:checked)').length;
+
   // update unchecked count whenever a checkbox is changed
   todoCheckbox.addEventListener('change', () => {
+    uncheckedCountSpan.textContent = document.querySelectorAll('input[type="checkbox"]:not(:checked)').length;
+  })
+
+  // delete item from list and update item counts
+  todoDelete.addEventListener('click', () => {
+    list.removeChild(todoItem);
+
+    liList = list.getElementsByTagName('li');
+    itemCountSpan.textContent = liList.length;
     uncheckedCountSpan.textContent = document.querySelectorAll('input[type="checkbox"]:not(:checked)').length;
   })
   
