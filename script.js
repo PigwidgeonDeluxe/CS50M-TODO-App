@@ -19,12 +19,6 @@ function newTodo() {
     newTodo();
     return;
   }
-  // check if user input is too long
-  if (userInput.length > 52){
-    alert('User input must be 52 characters or less!');
-    newTodo();
-    return;
-  }
   
   // create new list element
   const todoItem = document.createElement('li');
